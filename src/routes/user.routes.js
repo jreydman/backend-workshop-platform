@@ -1,0 +1,27 @@
+const router = require('express-promise-router')()
+const {check} = require("express-validator")
+const { UserController, TokenController } = require('../controllers')
+//const {registrationValidator,refreshPasswordValidator} = require('../helpers/validators')
+const refreshPasswordValidator = require('../helpers/refreshPassword.validator')
+const registrationValidator = require('../helpers/registration.validator')
+router.route('/:id').get(UserController.get)
+router.route('/').post(UserController.create)
+router.route('/').get(UserController.getAll)
+router.route('/:id').put(UserController.update)
+router.route('/:id').delete(UserController.delete)
+router.route('/username/:username').get(UserController.getByUsername)
+router.route('/email/:email').get(UserController.getByEmail)
+router.route('/rule/:rulename').get(UserController.getByRulename)
+router.route('/group/:groupname').get(UserController.getByGroupname)
+router.route('/get/q').get(UserController.queryArgs)
+router.route('/get').post(UserController.bodyArgs)
+router.route('/registration').post(registrationValidator,UserController.registration)
+router.route('/authorization').post(UserController.authorization)
+router.route('/activate/:link').get(UserController.activate)
+router.route('/logout').post(UserController.logout)
+router.route('/password/refresh').post(refreshPasswordValidator,UserController.refreshPassword)
+
+// ...AUTH TOKEN
+router.route('/token/refresh').get(UserController.refreshToken)
+
+module.exports = router
